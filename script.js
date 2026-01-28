@@ -140,4 +140,60 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+const subtitleEl = document.querySelector(".prompt");
+fetch("./audio/Webomindapps_Anniversary.vtt")
+  .then(res => res.text())
+  .then(parseVTT);
+
+let cues = [];
+
+function parseVTT(vtt) {
+  const lines = vtt.split("\n");
+  let current = null;
+
+  lines.forEach(line => {
+    line = line.trim();
+
+    if (line.includes("-->")) {
+      const [start, end] = line.split(" --> ");
+      current = {
+        start: toSeconds(start),
+        end: toSeconds(end),
+        text: ""
+      };
+      cues.push(current);
+    } else if (current && line && !line.startsWith("WEBVTT")) {
+      current.text += (current.text ? " " : "") + line;
+    }
+  });
+}
+
+function toSeconds(t) {
+  t = t.replace(",", "."); // normalize
+
+  const parts = t.split(":").map(Number);
+
+  if (parts.length === 3) {
+    // HH:MM:SS.mmm
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+
+  if (parts.length === 2) {
+    // MM:SS.mmm (MOST COMMON)
+    return parts[0] * 60 + parts[1];
+  }
+
+  return 0;
+}
+
+
+audio.addEventListener("timeupdate", () => {
+  const t = audio.currentTime;
+  const cue = cues.find(c => t >= c.start && t <= c.end);
+  subtitleEl.textContent = cue ? cue.text : "";
+});
+
+
 animate();
+
+

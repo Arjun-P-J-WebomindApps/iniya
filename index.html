@@ -1,29 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>iniya</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>iniya</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="stage">
 
-  <div class="stage">
+      <!-- Resonance -->
+      <canvas id="canvas"></canvas>
 
-    <!-- The "voice" -->
-    <div class="voice">
-      <span class="prompt">INIYA</span>
+      <!-- Subtitles / Voice -->
+      <div class="subtitle-wrap">
+        <span class="prompt">INIYA</span>
+      </div>
+
+      <!-- Audio control (secondary) -->
+      <audio id="audio" controls>
+        <source src="./audio/Webomindapps_Anniversary.mp3" type="audio/mpeg" />
+        <track
+          kind="subtitles"
+          src="./audio/Webomindapps_Anniversary.vtt"
+          srclang="en"
+          label="English"
+          default
+        />
+      </audio>
+
     </div>
 
-    <!-- The resonance -->
-    <canvas id="canvas"></canvas>
-
-    <!-- Control stays invisible in intent -->
-    <audio id="audio" controls>
-      <source src="./audio/Webomindapps_Anniversary.mp3" type="audio/mpeg">
-    </audio>
-
-  </div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
